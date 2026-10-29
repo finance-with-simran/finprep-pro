@@ -131,3 +131,4 @@ finprep_pro/
 ├── .gitignore                  # Git ignore rules
 └── README.md                   # Documentation & setup instructions
 ```
+LIVE LINK : https://finance-with-simran-finprep-pro-app-56aoux.streamlit.app/

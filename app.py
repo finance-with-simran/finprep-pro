@@ -210,6 +210,138 @@ MODULES = [
                 ],
                 "formula": "Price Variance = (P_act - P_bud) × Q_act  |  Volume Variance = (Q_act - Q_bud) × P_bud",
                 "pro_tip": "In an FP&A interview, if revenue missed target by $1M, never just say 'sales were down'. Deconstruct it immediately: Was it market demand drop (Volume) or competitive discounting (Price)?"
+            },
+            {
+                "subtitle": "4.3 Driver-Based Forecasting & Headcount Modeling",
+                "summary": "How modern FP&A builds dynamic operational models rather than arbitrary growth percentages.",
+                "key_takeaways": [
+                    "Volume Drivers: Units Sold × Average Selling Price (ASP), or Active Subscribers × ARPU (Average Revenue Per User).",
+                    "SaaS Recurring Revenue: Ending ARR = Beginning ARR + New ARR + Expansion ARR - Churn / Contraction.",
+                    "Headcount Modeling (Largest OPEX component): Base Salary + Benefits Burden (typically 20-25%) + Target Bonus + Planned Hiring Month (ramp lag)."
+                ],
+                "formula": "Revenue = Active Units / Accounts × ARPU  |  SaaS Net Retention Rate (NRR) = (Ending ARR from existing cohort) / (Starting ARR)",
+                "pro_tip": "Never forecast revenue by typing '+10% next year' in an interview case. Interviewers look for driver-based mechanics: 'We forecast 15 sales reps × $800k quota capacity at 75% ramp efficiency.'"
+            },
+            {
+                "subtitle": "4.4 Rolling Forecasts (3+9, 6+6, 9+3) vs. Static Annual Budget",
+                "summary": "The dynamic operating rhythm used by Deloitte, Big 4, and Fortune 500 corporate finance teams.",
+                "key_takeaways": [
+                    "Static Annual Budget (AOP): Locked before fiscal year starts (e.g. Q4). Sets target bonuses and board expectations, but becomes stale by Q2.",
+                    "3+9 Forecast: 3 months of Actuals + 9 months of re-projected Forecast.",
+                    "6+6 Forecast: Mid-year review with 6 months Actuals + 6 months Forecast.",
+                    "9+3 Forecast: Q3 strategic sprint used to anchor Q4 performance and preview the next fiscal year's baseline."
+                ],
+                "formula": "Full-Year Outturn = YTD Actuals (Closed Months) + Updated Run-Rate (Open Months)",
+                "pro_tip": "A favorite Deloitte & Big 4 interview question: 'Why bother with rolling forecasts if we already approved the budget?' Answer: Budgets establish board governance and compensation benchmarks; rolling forecasts steer resource re-allocation as macro conditions change."
+            },
+            {
+                "subtitle": "4.5 OPEX vs. CAPEX Capital Allocation in Budgeting",
+                "summary": "The critical accounting and management budgeting distinction between cash outlays and P&L expense recognition.",
+                "key_takeaways": [
+                    "OPEX (Operating Expenses): Day-to-day operational costs (SG&A, salaries, cloud hosting, SaaS subscriptions). Deducted immediately on the Income Statement.",
+                    "CAPEX (Capital Expenditures): Purchases of long-term economic assets (servers, manufacturing equipment, capitalized internal software). Capitalized on Balance Sheet as PP&E and depreciated over useful life.",
+                    "Free Cash Flow Impact: Both OPEX and CAPEX consume cash immediately, but CAPEX bypasses EBITDA, artificially flattering operating margins if capitalized aggressively."
+                ],
+                "formula": "Free Cash Flow = Cash Flow from Operations (CFO) - Capital Expenditures (Capex)",
+                "pro_tip": "Beware of companies capitalizing operating costs (like WorldCom). When a company shifts software development costs from OPEX to CAPEX, EBITDA increases today, but cash generation remains identical."
+            }
+        ]
+    },
+    {
+        "id": "excel_modeling",
+        "title": "Module 5: Excel Financial Modeling Best Practices & Dynamic Tables",
+        "level": "Intermediate to Advanced",
+        "est_time": "30 mins",
+        "description": "Master Wall Street & Big 4 modeling standards: color coding, dynamic debt schedules, circular interest loops, and 2-way sensitivity data tables.",
+        "lessons": [
+            {
+                "subtitle": "5.1 The Universal Financial Modeling Standards",
+                "summary": "Formatting and layout conventions expected by Big 4 Deals and Investment Banking teams.",
+                "key_takeaways": [
+                    "Color-Coding Rule: Blue font = Hardcoded Inputs / Assumptions; Black font = Formulas & Calculations; Green font = External Links to other tabs / workbooks.",
+                    "Never hardcode numbers inside formulas! (e.g., use '=B5*(1+$C$2)', NEVER '=B5*1.08').",
+                    "Column Consistency: Every forecast column across Income Statement, Balance Sheet, and CFS must represent the exact same calendar period across all rows."
+                ],
+                "formula": "Model Integrity: Formulas must evaluate cleanly without mouse dependency; Auditing shortcut: Ctrl + [ (Trace Precedents), F5 + Enter (Return)",
+                "pro_tip": "If you hardcode a number inside an Excel formula during a Deloitte or IB modeling test, it is an automatic red flag. Keep all drivers in a dedicated Assumptions block."
+            },
+            {
+                "subtitle": "5.2 Dynamic 2-Way What-If Sensitivity Data Tables",
+                "summary": "Sensitivity testing valuation (WACC vs. Terminal Growth Rate) using Excel's built-in Data Table engine.",
+                "key_takeaways": [
+                    "Setup: Place the target output cell (e.g., Implied Share Price formula `=C50`) at the top-left intersection corner of the table grid.",
+                    "Row Input: Place varying WACC values (e.g. 7.5%, 8.0%, 8.5%, 9.0%) along the top row.",
+                    "Column Input: Place varying Terminal Growth Rates (e.g. 1.5%, 2.0%, 2.5%, 3.0%) along the left column.",
+                    "Execution: Highlight grid -> Press `Alt + A + W + T` (Data -> What-If Analysis -> Data Table) -> Link Row Input Cell to model WACC and Column Input Cell to model Growth Rate."
+                ],
+                "formula": "Data Table Shortcut: Alt + A + W + T  |  F9 to force calculation if tables are set to 'Automatic Except for Data Tables'",
+                "pro_tip": "Interviewers will ask: 'Why does my Data Table show all identical numbers?' Answer: Calculation Options in Excel are set to 'Automatic Except Data Tables'. Press F9 or switch to Automatic!"
+            },
+            {
+                "subtitle": "5.3 Debt Schedules, Cash Sweeps & Circular Reference Loops",
+                "summary": "Modeling debt paydown and interest expense without crashing Excel with iterative calculation errors.",
+                "key_takeaways": [
+                    "Beginning Debt Balance + New Debt Issued - Debt Repayments = Ending Debt Balance.",
+                    "Cash Sweep: Allocating 100% of excess Free Cash Flow above a minimum liquidity buffer toward mandatory and optional debt prepayment.",
+                    "Circular Reference Loop: Interest Expense depends on Average Debt, but Average Debt depends on Ending Cash, which depends on Net Income, which depends on Interest Expense!",
+                    "Best Practice: Use Beginning Debt Balance to calculate interest in beginner models, or enable Iterative Calculation in Excel (File -> Options -> Formulas -> Enable iterative calculation with Max Iterations = 100)."
+                ],
+                "formula": "Interest Expense = Average(Beginning Debt, Ending Debt) × Interest Rate  |  Cash Sweep = Min(Available FCF, Remaining Debt)",
+                "pro_tip": "In an LBO or Big 4 modeling test, build a manual 'Circuit Breaker' switch (0 or 1 cell). If Excel circular errors break the model, toggle the switch to 0 to zero-out interest and reset calculation cleanly."
+            }
+        ]
+    },
+    {
+        "id": "ma_lbo_pe",
+        "title": "Module 6: M&A, Leveraged Buyouts (LBO) & Capital Budgeting",
+        "level": "Advanced (Wall Street & Bulge Bracket)",
+        "est_time": "40 mins",
+        "description": "Master buy-side & sell-side M&A accretion/dilution, Private Equity LBO debt mechanics, IRR derivation, and corporate capital budgeting (NPV vs. IRR).",
+        "lessons": [
+            {
+                "subtitle": "6.1 Leveraged Buyouts (LBO): The Core PE Wealth Creation Engine",
+                "summary": "How Private Equity firms buy companies using 60-80% debt, use company cash flows to pay off the debt, and generate 20%+ annualized returns (IRR).",
+                "key_takeaways": [
+                    "Analogy: Buying a house to rent out. You put down 20% cash (Sponsor Equity) and borrow 80% mortgage (Debt). Tenant rent pays off the mortgage over 5 years. When you sell, you keep 100% of the sale price minus remaining mortgage!",
+                    "The 3 Levers of LBO Returns: (1) Deleveraging: Paying down debt with operational Free Cash Flow; (2) Operational EBITDA Growth: Expanding revenue or cutting costs; (3) Multiple Expansion: Selling at a higher EV/EBITDA multiple than entry.",
+                    "Ideal LBO Candidate: Stable, predictable recurring cash flows (low cyclicality), low maintenance Capex requirements, strong asset base for debt collateral, and room for operational margin improvement."
+                ],
+                "formula": "Exit Equity = Exit Enterprise Value - Ending Net Debt  |  MoIC = Exit Equity / Entry Equity  |  IRR = (MoIC)^(1/Years) - 1",
+                "pro_tip": "Interviewers will ask: 'Which lever is most respected in an LBO pitch?' Answer: Deleveraging and organic EBITDA growth. Never rely primarily on multiple expansion—assuming the market will pay a higher multiple in 5 years is speculative."
+            },
+            {
+                "subtitle": "6.2 M&A Deal Mechanics & Accretion / Dilution Analysis",
+                "summary": "Evaluating whether acquiring a company increases or decreases the buyer's Earnings Per Share (EPS).",
+                "key_takeaways": [
+                    "Accretive Deal: Pro-Forma EPS > Buyer's Standalone EPS (deal creates immediate accounting value per share).",
+                    "Dilutive Deal: Pro-Forma EPS < Buyer's Standalone EPS (deal hurts earnings per share).",
+                    "Financing Mix: Cash is cheapest (foregone interest rate ~3-4% after-tax), Debt is second (interest expense ~5-7% after-tax), Equity is most expensive (Cost of Equity ~9-12%).",
+                    "The Golden All-Stock Rule: In an all-stock deal, if Buyer P/E > Target P/E, the deal is ALWAYS ACCRETIVE! (Buyer pays with higher-valued currency)."
+                ],
+                "formula": "Pro-Forma EPS = (Buyer Net Income + Target Net Income + After-Tax Synergies - After-Tax New Interest) / (Buyer Shares + New Shares Issued)",
+                "pro_tip": "Be ready for this trick question: 'Is an accretive deal always a good deal?' NO! An acquisition can be EPS accretive (funded with cheap debt) but still destroy economic shareholder value if Return on Invested Capital (ROIC) is less than WACC."
+            },
+            {
+                "subtitle": "6.3 Real-World Corporate Case Studies: Apple, Microsoft & JP Morgan",
+                "summary": "How the world's most dominant corporations deploy billions across M&A, balance sheet leverage, and capital allocation.",
+                "key_takeaways": [
+                    "Apple (Cash Flow & Capital Return Machine): Operates with negative working capital, massive free cash flow conversion, and uses low-cost corporate debt to fund massive share repurchases ($90B+/yr) without repatriating foreign cash, driving explosive EPS growth.",
+                    "Microsoft (Strategic Cloud & Gaming M&A): Deployed $69B in cash for Activision Blizzard and $26B for LinkedIn. Evaluates M&A based on strategic platform ecosystem synergies, cross-selling enterprise cloud (Azure), and software recurring ARR rather than standalone valuation multiples.",
+                    "J.P. Morgan (Commercial & Investment Banking Balance Sheet): Manages Net Interest Margin (NIM = Loan Yield - Deposit Cost), regulatory Tier 1 Capital ratios (CET1 > 14%), and loan loss provisions. In banking, debt is inventory, not leverage!"
+                ],
+                "formula": "Apple FCF Conversion = CFO / Net Income (>100%)  |  JPMorgan NIM = (Investment Return - Interest Expense) / Average Earning Assets",
+                "pro_tip": "If interviewing for Big Tech or Corporate Banking, cite these balance sheets: Apple's massive share buyback program illustrates the difference between organic Net Income growth and EPS accretion via share count reduction."
+            },
+            {
+                "subtitle": "6.4 Capital Budgeting: NPV, IRR & Payback Period",
+                "summary": "How corporate executives choose between competing capital projects and factory expansions.",
+                "key_takeaways": [
+                    "Net Present Value (NPV): Present value of all cash inflows minus initial investment. Rule: Accept if NPV > 0. (The gold standard).",
+                    "Internal Rate of Return (IRR): The discount rate where NPV equals zero. Rule: Accept if IRR > Company WACC / Hurdle Rate.",
+                    "When NPV and IRR Conflict: Always choose NPV! IRR assumes intermediate cash flows are reinvested at the IRR itself (unrealistic for high IRRs), while NPV assumes reinvestment at the actual cost of capital."
+                ],
+                "formula": "NPV = Sum[ FCF_t / (1 + r)^t ] - Initial Capex  |  0 = Sum[ FCF_t / (1 + IRR)^t ] - Initial Capex",
+                "pro_tip": "In an FP&A or corporate development interview, when asked why Payback Period is inferior to NPV, state: 'Payback period ignores cash flows received after the cutoff year and ignores the time value of money completely.'"
             }
         ]
     }
@@ -521,6 +653,223 @@ INTERVIEW_QUESTIONS = [
         ],
         "rookie_trap": "Saying 'if it's EPS accretive, it creates value.' Accretion is an accounting metric; a deal can be EPS accretive but destroy economic value if paid with cheap debt while ROIC < WACC.",
         "follow_up": "Why might an EPS accretive deal actually destroy true economic value for shareholders?"
+    },
+    {
+        "id": "q9",
+        "company": "Deloitte",
+        "company_title": "Financial Advisory Analyst / Corporate Finance Analyst",
+        "role": "Financial Analyst",
+        "topic": "Working Capital Flow (Inventory & Accounts Payable)",
+        "difficulty": "Junior / Entry-Level",
+        "type": "Technical Core",
+        "question": "A company purchases $100 of inventory: 50% paid in cash and 50% on supplier credit (Accounts Payable). Walk me through the 3 statements immediately, and then what happens when all inventory is sold for $150 in cash.",
+        "written_answer": (
+            "Part 1: Immediate Purchase of $100 Inventory:\n"
+            "1. Income Statement: No impact. Inventory is an asset; expenses only hit the P&L when goods are sold (matching principle).\n"
+            "2. Cash Flow Statement: Under CFO, Inventory increases by $100 (cash outflow -$100). Accounts Payable increases by $50 (cash inflow +$50). Net change in cash is -$50 from operations.\n"
+            "3. Balance Sheet: Assets side: Cash is down -$50, Inventory is up +$100 (Net Assets +$50). Liabilities side: Accounts Payable is up +$50. Both sides balance at +$50!\n\n"
+            "Part 2: Sold for $150 in Cash (assuming 20% tax rate):\n"
+            "1. Income Statement: Revenue = $150, COGS = $100. Gross Profit = $50. Taxes at 20% = $10. Net Income increases by +$40.\n"
+            "2. Cash Flow Statement: Net Income = +$40. Inventory decreases by $100 (add-back cash inflow +$100). Net CFO increases by +$140.\n"
+            "3. Balance Sheet: Assets side: Cash is up +$140, Inventory drops -$100 (Net Assets +$40). Equity side: Retained Earnings increase by +$40. Both sides balance at +$40!"
+        ),
+        "spoken_script": (
+            "I will break this down into two distinct events: First, the initial purchase; Second, the sale.\n\n"
+            "[Part 1: The Purchase]\n"
+            "Immediately upon purchase, there is ZERO impact on the Income Statement because inventory is capitalized on the Balance Sheet until sold.\n"
+            "On the Cash Flow Statement: under Operating Activities, inventory increase is a $100 outflow, but accounts payable increase is a $50 inflow, so Net Cash decreases by $50.\n"
+            "On the Balance Sheet: Cash is down $50 and Inventory is up $100, so Total Assets increase by $50. On the Liabilities side, Accounts Payable increases by $50. Both sides balance up by $50.\n\n"
+            "[Part 2: The Sale for $150 in Cash at 20% tax]\n"
+            "On the Income Statement: Revenue is $150 and COGS is $100, leaving $50 in Pre-Tax Profit. With a 20% tax rate, Net Income increases by $40.\n"
+            "On the Cash Flow Statement: Net Income starts at +$40. We add back the $100 reduction in inventory because we collected the cash, so Cash Flow from Operations increases by $140.\n"
+            "On the Balance Sheet: Cash is up $140, Inventory is down $100, so Net Assets are up $40. Retained Earnings increase by $40 from Net Income. Both sides balance up by $40!"
+        ),
+        "vocal_cues": [
+            "Signpost explicitly: 'I will split this into Part 1 (the purchase) and Part 2 (the subsequent sale).' This prevents getting tangled.",
+            "Emphasize the matching principle: 'No impact on the P&L until the inventory is actually sold.'"
+        ],
+        "rookie_trap": "Recording the $100 inventory purchase as an expense on the Income Statement immediately, or forgetting that increasing Accounts Payable is a positive source of cash.",
+        "follow_up": "What if the inventory was sold for $150 on credit instead of cash? How does the CFS change?"
+    },
+    {
+        "id": "q10",
+        "company": "PwC",
+        "company_title": "Deals - Transaction Services Analyst",
+        "role": "Financial Analyst",
+        "topic": "EBITDA vs. Cash Flow & Solvency",
+        "difficulty": "Associate / Experienced",
+        "type": "Technical Core",
+        "question": "Can a company report positive, growing EBITDA and Net Income, but still file for bankruptcy? Walk me through how this happens.",
+        "written_answer": (
+            "Yes, absolutely. A company can be highly profitable on an accrual basis (positive EBITDA and Net Income) and still become insolvent due to liquidity failure. "
+            "Four primary mechanisms cause this: (1) Severe Working Capital drain: Aggressive revenue growth booked on uncollected Accounts Receivable or cash tied up in unsold Inventory; "
+            "(2) Debt Principal Amortization: Debt principal repayments appear in Cash Flow from Financing (CFF) and do NOT reduce EBITDA or Net Income; "
+            "(3) Massive Capital Expenditures: Heavy maintenance capex drained in CFI; "
+            "(4) Revenue-Cost Timing Mismatch: Delayed customer payment milestones while supplier bills and payroll require immediate cash."
+        ),
+        "spoken_script": (
+            "Yes, absolutely. In fact, this is one of the most common causes of corporate insolvency in high-growth companies.\n\n"
+            "[Core thesis]\n"
+            "EBITDA and Net Income measure accrual profitability, but debt obligations must be paid in physical liquid cash. A profitable company goes bankrupt when cash inflows lag cash commitments.\n\n"
+            "This happens primarily through two levers:\n"
+            "First, Working Capital Bloat: If a company doubles revenue but customers don't pay for 120 days (huge DSO increase), or if cash is locked in slow-moving inventory, operating cash flow can be deeply negative despite strong booked Net Income.\n\n"
+            "Second, Debt Principal Repayments: EBITDA only accounts for interest expense. If the company has a $50M balloon principal payment due, that cash outflow appears in Financing Activities—it never touches EBITDA or Net Income. If cash in bank is insufficient, the company defaults and files Chapter 11."
+        ),
+        "vocal_cues": [
+            "Answer with decisive conviction: 'Yes, absolutely.' Never hesitate on this foundational principle.",
+            "Contrast 'Accrual Profitability' vs 'Liquid Solvency'—this terminology immediately establishes seniority."
+        ],
+        "rookie_trap": "Confusing EBITDA with physical cash. EBITDA ignores working capital changes, Capex, and debt principal repayments entirely.",
+        "follow_up": "How would you look at the Cash Conversion Cycle (CCC) to detect early warning signs of this insolvency risk?"
+    },
+    {
+        "id": "q11",
+        "company": "EY",
+        "company_title": "Valuation, Modeling and Economics (VME) Analyst",
+        "role": "Valuation",
+        "topic": "Excel Technical Test (2-Way Data Table)",
+        "difficulty": "Associate / Experienced",
+        "type": "Excel Technical Drill",
+        "question": "Explain step-by-step how to set up a 2-way What-If Data Table in Excel to sensitivity-test WACC vs. Terminal Growth Rate.",
+        "written_answer": (
+            "1. In an Excel sheet, construct a grid where the top row contains incremental WACC values (e.g. 7.5%, 8.0%, 8.5%, 9.0%) and the left column contains Terminal Growth Rates (e.g. 1.5%, 2.0%, 2.5%, 3.0%).\n"
+            "2. In the top-left corner cell linking the row and column headers, enter the formula referencing the DCF valuation output cell (e.g. `=C50` for Implied Share Price).\n"
+            "3. Select the entire table range including the corner formula, row headers, and column headers.\n"
+            "4. Press shortcut `Alt + A + W + T` (Data -> What-If Analysis -> Data Table).\n"
+            "5. In the dialog box: Set 'Row input cell' to the model's WACC assumption cell. Set 'Column input cell' to the model's Terminal Growth Rate assumption cell.\n"
+            "6. Click OK. Format numbers as currency. If numbers do not recalculate, press F9 to refresh."
+        ),
+        "spoken_script": (
+            "To build a 2-way sensitivity table in Excel, here is the exact 4-step sequence:\n\n"
+            "First, I format the grid: along the top row, I list my WACC values—for example, 7.5% through 9.5% in 50 bps increments. Along the left column, I list my Terminal Growth Rates—say 1.5% through 3.0%.\n\n"
+            "Second, in the top-left intersection corner, I link directly to my DCF target cell—such as `=C50` for Implied Share Price.\n\n"
+            "Third, I highlight the full grid and use the Excel shortcut `Alt + A + W + T` to open the Data Table tool.\n\n"
+            "Finally, for 'Row input cell', I point to the model's WACC driver, and for 'Column input cell', I point to the Terminal Growth Rate driver, then press Enter. If values display identically, I press F9 to trigger calculation because Excel often defaults to 'Automatic Except for Data Tables' for speed."
+        ),
+        "vocal_cues": [
+            "Mention the exact keyboard shortcut `Alt + A + W + T` smoothly; it proves you build models daily without touching the mouse.",
+            "Proactively mention the F9 / 'Automatic Except Data Tables' nuance—this is the exact follow-up test Big 4 modelers check for."
+        ],
+        "rookie_trap": "Confusing the Row Input Cell (horizontal headers) with Column Input Cell (vertical headers), which inverses the sensitivity matrix.",
+        "follow_up": "How do you conditionally format the matrix so the base-case cell and value spectrum are immediately clear to clients?"
+    },
+    {
+        "id": "q12",
+        "company": "Deloitte",
+        "company_title": "Financial Advisory Analyst / Corporate Finance Analyst",
+        "role": "Financial Analyst",
+        "topic": "Deloitte Behavioral & Fit Strategy",
+        "difficulty": "Junior / Entry-Level",
+        "type": "Behavioral / Fit",
+        "question": "Why choose Financial Advisory / Financial Analytics at Deloitte over working in pure investment banking or traditional audit accounting?",
+        "written_answer": (
+            "Strong candidate answer: (1) Breadth of Transaction Exposure: At Deloitte Financial Advisory, analysts touch M&A due diligence, business modeling, restructuring, and valuation across diverse mid-market and enterprise deals rather than being pigeonholed solely into PowerPoint pitchbook churn; "
+            "(2) Rigorous Technical Depth: Advisory demands rigorous balance sheet integration and audit-defensible modeling (PCAOB/SEC standards), giving a deeper understanding of sustainable cash flow than pure multiple pitching; "
+            "(3) Collaborative Client Culture: Greater direct interaction with CFOs and deal sponsors early in career with sustainable high-performance culture."
+        ),
+        "spoken_script": (
+            "I chose Deloitte Financial Advisory for three distinct reasons:\n\n"
+            "First, the depth of technical problem-solving: While pure investment banking often spends significant time formatting PowerPoint pitchbooks, Deloitte Financial Advisory is deeply immersed in the financial engine of deals—building 3-statement models, forensic working capital reviews, and valuation defensibility under audit scrutiny.\n\n"
+            "Second, transaction versatility: In this practice, I get exposure across the entire deal lifecycle—from pre-deal synergy modeling and valuation to post-merger integration—across diverse industries rather than being siloed in one narrow sector.\n\n"
+            "And third, cultural client partnership: Deloitte's advisory reputation means we work alongside CFOs and corporate leadership as trusted strategic advisors. That blend of rigorous modeling, executive client engagement, and sustainable excellence is exactly where I want to build my career."
+        ),
+        "vocal_cues": [
+            "Be positive about Deloitte, NOT negative about Banking. Frame it as 'choosing technical depth and transaction versatility' rather than 'running away from IB hours'.",
+            "Use Deloitte's specific practice language: 'deal lifecycle', 'audit defensibility', 'trusted strategic advisor'."
+        ],
+        "rookie_trap": "Saying 'I want Deloitte because investment banking hours are too brutal.' That makes you sound low-energy. Always frame your answer around intellectual and client value.",
+        "follow_up": "Which specific offering in Financial Advisory excites you most: Valuation & Modeling, M&A Diligence, or Restructuring?"
+    },
+    {
+        "id": "q13",
+        "company": "Goldman Sachs",
+        "company_title": "Classic Investment Banking - Structured Finance / Valuation",
+        "role": "Investment Banking",
+        "topic": "LBO Mental Math & Rule of 72",
+        "difficulty": "Associate / Experienced",
+        "type": "Technical Core",
+        "question": "A private equity firm buys a business for $100M using 70% debt and 30% equity. In 5 years, the firm sells the business for $150M after paying down $30M of debt using operational cash flows. What is the MoIC and approximate IRR?",
+        "written_answer": (
+            "Step 1: Calculate Initial Sponsor Equity: 30% of $100M purchase price = $30M initial equity investment.\n"
+            "Step 2: Calculate Ending Debt: Started with $70M debt ($100M * 70%), paid down $30M over 5 years -> Ending Debt = $40M.\n"
+            "Step 3: Calculate Ending Equity: Exit Enterprise Value of $150M minus Ending Debt of $40M = $110M Exit Equity Value.\n"
+            "Step 4: Calculate Multiple on Invested Capital (MoIC): $110M / $30M = 3.67x MoIC.\n"
+            "Step 5: Calculate IRR: Doubling money (2.0x) in 5 years is ~15% IRR; tripling (3.0x) in 5 years is ~25% IRR. A 3.67x return in 5 years equals approximately 29-30% IRR!"
+        ),
+        "spoken_script": (
+            "I will calculate this step-by-step: entry equity, exit equity, MoIC, and finally IRR.\n\n"
+            "[Step 1: Entry]\n"
+            "With a $100M purchase at 70% leverage, the sponsor invests $30M of equity and takes on $70M of debt.\n\n"
+            "[Step 2: Exit & Deleveraging]\n"
+            "Over 5 years, the company pays down $30M of debt, leaving $40M of ending debt. "
+            "When the business exits at $150M, we subtract the $40M remaining debt, which leaves $110M of exit equity to the sponsor.\n\n"
+            "[Step 3: Returns]\n"
+            "Dividing $110M by our $30M initial equity yields a Multiple on Invested Capital (MoIC) of approximately 3.67x. "
+            "Over a 5-year holding period, a 2.0x MoIC is 15% IRR, a 3.0x is 25% IRR, so a 3.67x MoIC translates to roughly 29% to 30% annualized IRR. This is a home-run private equity transaction."
+        ),
+        "vocal_cues": [
+            "Lay out the mental shortcuts aloud: 'Doubling in 5 years is 15% IRR, tripling is 25% IRR.' Private equity partners test whether you know these benchmarks instinctively.",
+            "Keep your tone crisp and structured: Entry Equity -> Exit Equity -> MoIC -> IRR."
+        ],
+        "rookie_trap": "Forgetting to subtract remaining debt from the $150M exit price before calculating MoIC.",
+        "follow_up": "What happens to the IRR if the sponsor takes a dividend recapitalization of $20M in Year 3?"
+    },
+    {
+        "id": "q14",
+        "company": "J.P. Morgan",
+        "company_title": "Investment Banking Analyst (J.P. Morgan CIB)",
+        "role": "Investment Banking",
+        "topic": "M&A Accretion / Dilution Golden Rule",
+        "difficulty": "Junior / Entry-Level",
+        "type": "Technical Core",
+        "question": "Company A trades at a P/E of 20x and acquires Company B trading at a P/E of 12x in an all-stock transaction. Is the deal accretive or dilutive? What if it was funded with 100% debt at 8% interest?",
+        "written_answer": (
+            "Part 1: All-Stock Deal: The deal is ACCRETIVE. In an all-stock transaction, when the buyer's P/E (20x) is higher than the seller's P/E (12x), the buyer is paying with high-valued currency (cheaper cost of equity) to acquire cheaper earnings, which always increases pro-forma EPS.\n\n"
+            "Part 2: 100% Debt Deal: We compare the After-Tax Cost of Debt to the Seller's Earnings Yield. Seller's Earnings Yield = 1 / 12x = 8.33%. If debt interest is 8% with a 25% tax rate, After-Tax Cost of Debt = 8% * (1 - 0.25) = 6.0%. Since the Earnings Yield (8.33%) is greater than the Cost of Debt (6.0%), the deal is ACCRETIVE!"
+        ),
+        "spoken_script": (
+            "In an all-stock transaction, this deal is immediately ACCRETIVE.\n\n"
+            "[The Rule of P/E]\n"
+            "The rule of thumb is: when Buyer P/E is greater than Target P/E in a 100% stock deal, the acquisition is always accretive. Company A is trading at 20x, so its cost of equity is 5%. It is buying Company B trading at 12x, whose earnings yield is 8.33%. Company A acquires more earnings per share than it issues in new stock.\n\n"
+            "[Part 2: 100% Debt at 8%]\n"
+            "To evaluate the debt financing, we compare Company B's Earnings Yield to the After-Tax Cost of Debt. "
+            "Company B yields 8.33% (1 divided by 12x). Assuming a 25% corporate tax rate, the after-tax cost of 8% debt is 6.0%. "
+            "Because the acquired earnings yield of 8.33% exceeds the 6.0% cost of debt, the deal is ALSO accretive under debt financing."
+        ),
+        "vocal_cues": [
+            "Use the term 'Earnings Yield' (1 / P/E); it proves you understand the mathematical inversion of valuation multiples.",
+            "Mention the after-tax cost of debt tax shield: Kd * (1 - t)."
+        ],
+        "rookie_trap": "Comparing pre-tax interest rate (8%) directly to P/E without tax-affecting the interest expense.",
+        "follow_up": "Why might an acquisition be EPS accretive on paper, but still destroy true economic value for shareholders?"
+    },
+    {
+        "id": "q15",
+        "company": "Amazon",
+        "company_title": "Corporate Development / Treasury Financial Analyst",
+        "role": "Corporate Finance",
+        "topic": "Capital Budgeting: NPV vs IRR Conflict",
+        "difficulty": "Associate / Experienced",
+        "type": "Methodology",
+        "question": "You are evaluating two mutually exclusive projects: Project A has an IRR of 35% with an NPV of $10M. Project B has an IRR of 22% with an NPV of $25M. Which project do you recommend to the executive committee and why?",
+        "written_answer": (
+            "I recommend Project B. While Project A has a higher percentage return (35% vs 22%), Project B generates $25M in net present shareholder wealth compared to only $10M for Project A. "
+            "When evaluating mutually exclusive capital allocation projects, Net Present Value (NPV) always takes precedence over Internal Rate of Return (IRR) because: (1) Scale Differences: A 35% return on a $1M project adds far less absolute value than a 22% return on a $50M project; (2) Reinvestment Rate Assumption: IRR unrealistically assumes cash flows are reinvested at 35%, whereas NPV assumes realistic reinvestment at the company's cost of capital (WACC)."
+        ),
+        "spoken_script": (
+            "I recommend Project B, without question.\n\n"
+            "[Direct headline]\n"
+            "Our corporate objective is to maximize absolute shareholder wealth in dollars, not percentage ratios. Project B generates $25M of Net Present Value—two and a half times more economic value than Project A's $10M.\n\n"
+            "IRR is inherently misleading here for two reasons:\n"
+            "First is Scale: An IRR of 35% on a small $2M investment is great in percentage terms, but an IRR of 22% on a large $40M infrastructure project creates dramatically more actual dollar wealth for shareholders.\n\n"
+            "Second is Reinvestment Assumption: IRR mathematically assumes all cash flows are reinvested at 35%—which is rarely sustainable in practice. NPV assumes reinvestment at our actual WACC, making it the superior, audit-defensible decision metric."
+        ),
+        "vocal_cues": [
+            "Begin with an unequivocal executive recommendation: 'I recommend Project B, without question.'",
+            "Contrast 'Dollar Wealth Creation' vs 'Percentage Ratios'."
+        ],
+        "rookie_trap": "Choosing Project A just because 35% is a bigger number than 22%, ignoring project scale and the reinvestment fallacy.",
+        "follow_up": "What is the Crossover Rate between these two projects and how do you find it on an NPV profile graph?"
     }
 ]
 
@@ -775,7 +1124,13 @@ def generate_organized_notes(content: str, api_key: str = "") -> Dict[str, Any]:
     Transforms raw document content into structured, high-retention finance notes.
     Attempts Gemini API if key is available; otherwise uses deterministic finance NLP engine.
     """
-    key = api_key.strip() or os.getenv("GEMINI_API_KEY", "").strip()
+    secret_key = ""
+    try:
+        if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
+            secret_key = str(st.secrets["GEMINI_API_KEY"]).strip()
+    except Exception:
+        pass
+    key = api_key.strip() or secret_key or os.getenv("GEMINI_API_KEY", "").strip()
     
     if key:
         try:
@@ -1195,6 +1550,184 @@ def calculate_ccc(dio: float = 45.0, dso: float = 35.0, dpo: float = 50.0) -> Di
         "is_negative": ccc < 0
     }
 
+def calculate_lbo_model(
+    purchase_price: float = 100.0,
+    debt_pct: float = 0.70,
+    holding_period: int = 5,
+    entry_ebitda: float = 20.0,
+    exit_ebitda: float = 28.0,
+    exit_multiple: float = 8.0,
+    annual_fcf_paydown: float = 6.0
+) -> Dict[str, Any]:
+    """
+    Computes classic 5-year Private Equity Leveraged Buyout (LBO) returns:
+    Entry Equity, Debt Paydown, Exit Enterprise Value, Exit Equity, MoIC, and IRR.
+    """
+    initial_debt = purchase_price * debt_pct
+    initial_equity = purchase_price * (1.0 - debt_pct)
+    
+    total_debt_paid = min(initial_debt, annual_fcf_paydown * holding_period)
+    ending_debt = max(0.0, initial_debt - total_debt_paid)
+    
+    exit_enterprise_value = exit_ebitda * exit_multiple
+    exit_equity = max(0.0, exit_enterprise_value - ending_debt)
+    
+    moic = (exit_equity / initial_equity) if initial_equity > 0 else 0.0
+    irr = ((moic ** (1.0 / max(1, holding_period))) - 1.0) * 100.0 if moic > 0 else 0.0
+    
+    # Return decomposition
+    equity_growth = exit_equity - initial_equity
+    return {
+        "purchase_price": purchase_price,
+        "initial_debt": initial_debt,
+        "initial_equity": initial_equity,
+        "total_debt_paid": total_debt_paid,
+        "ending_debt": ending_debt,
+        "exit_enterprise_value": exit_enterprise_value,
+        "exit_equity": exit_equity,
+        "moic": round(moic, 2),
+        "irr": round(irr, 1),
+        "equity_growth": round(equity_growth, 2)
+    }
+
+def calculate_bva_variance(
+    budget_rev: float = 500.0,
+    actual_rev: float = 475.0,
+    budget_cogs: float = 250.0,
+    actual_cogs: float = 235.0,
+    budget_opex: float = 120.0,
+    actual_opex: float = 135.0
+) -> Dict[str, Any]:
+    """
+    Computes Budget vs Actual variance analysis, percentage variances,
+    favorable/unfavorable status, and full EBITDA bridge.
+    """
+    rev_var = actual_rev - budget_rev
+    rev_var_pct = (rev_var / budget_rev * 100) if budget_rev > 0 else 0.0
+    
+    # For expenses, lower actual than budget is Favorable (-)
+    cogs_var = actual_cogs - budget_cogs
+    cogs_var_pct = (cogs_var / budget_cogs * 100) if budget_cogs > 0 else 0.0
+    
+    opex_var = actual_opex - budget_opex
+    opex_var_pct = (opex_var / budget_opex * 100) if budget_opex > 0 else 0.0
+    
+    budget_ebitda = budget_rev - budget_cogs - budget_opex
+    actual_ebitda = actual_rev - actual_cogs - actual_opex
+    ebitda_var = actual_ebitda - budget_ebitda
+    ebitda_var_pct = (ebitda_var / abs(budget_ebitda) * 100) if budget_ebitda != 0 else 0.0
+    
+    # Favorable / Unfavorable tags
+    # Revenue: actual > budget = Favorable
+    rev_status = "Favorable" if rev_var >= 0 else "Unfavorable"
+    # Expenses: actual < budget = Favorable
+    cogs_status = "Favorable" if cogs_var <= 0 else "Unfavorable"
+    opex_status = "Favorable" if opex_var <= 0 else "Unfavorable"
+    ebitda_status = "Favorable" if ebitda_var >= 0 else "Unfavorable"
+    
+    return {
+        "budget_rev": budget_rev, "actual_rev": actual_rev, "rev_var": round(rev_var, 2), "rev_var_pct": round(rev_var_pct, 1), "rev_status": rev_status,
+        "budget_cogs": budget_cogs, "actual_cogs": actual_cogs, "cogs_var": round(cogs_var, 2), "cogs_var_pct": round(cogs_var_pct, 1), "cogs_status": cogs_status,
+        "budget_opex": budget_opex, "actual_opex": actual_opex, "opex_var": round(opex_var, 2), "opex_var_pct": round(opex_var_pct, 1), "opex_status": opex_status,
+        "budget_ebitda": round(budget_ebitda, 2), "actual_ebitda": round(actual_ebitda, 2), "ebitda_var": round(ebitda_var, 2), "ebitda_var_pct": round(ebitda_var_pct, 1), "ebitda_status": ebitda_status
+    }
+
+
+
+def ask_finance_ai(question: str, context: str = "", api_key: str = "", history: list = None) -> str:
+    """
+    Direct in-platform AI Finance Mentor.
+    Uses Gemini API if key is available, or built-in financial tutor fallback.
+    """
+    secret_key = ""
+    try:
+        if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
+            secret_key = str(st.secrets["GEMINI_API_KEY"]).strip()
+    except Exception:
+        pass
+    key = api_key.strip() or secret_key or os.getenv("GEMINI_API_KEY", "").strip()
+
+    system_prompt = (
+        "You are FinPrep AI, an elite, patient Wall Street finance professor and senior corporate finance mentor. "
+        "The user is a learner or interview candidate studying finance. "
+        "Explain concepts intuitively from first principles with simple analogies, then provide the exact technical "
+        "formula/accounting flow, followed by how interviewers at Goldman Sachs, JP Morgan, Deloitte, or Amazon test it. "
+        "Keep answers crisp, encouraging, beautifully formatted in Markdown with bold key terms, and easy to grasp. "
+        "If the user asks about a problem in their study material or balance sheet linkage, pinpoint the exact issue clearly."
+    )
+
+    if key:
+        try:
+            from google import genai
+            client = genai.Client(api_key=key)
+            prompt = f"{system_prompt}\n\n"
+            if context:
+                prompt += f"Context from the module the user is reading:\n\"\"\"{context}\"\"\"\n\n"
+            if history:
+                prompt += "Recent Conversation History:\n"
+                for h in history[-4:]:
+                    prompt += f"{h['role'].upper()}: {h['content']}\n"
+                prompt += "\n"
+            prompt += f"User's Question: {question}\n\nAnswer:"
+            
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt
+            )
+            if response and response.text:
+                return response.text
+        except Exception as e:
+            try:
+                # Try fallback model
+                response = client.models.generate_content(
+                    model='gemini-2.0-flash',
+                    contents=prompt
+                )
+                if response and response.text:
+                    return response.text
+            except Exception:
+                pass
+
+    # High-quality smart offline fallback response
+    q_lower = question.lower()
+    if "depreciation" in q_lower or "$10" in q_lower:
+        return (
+            "### 💡 Here is the exact mechanics of Depreciation across the 3 Statements:\n\n"
+            "1. **Income Statement**: Depreciation is an operating expense. A $10 increase reduces Operating Income (EBIT) by $10. "
+            "Assuming a 20% tax rate, you save $2 on taxes ($10 × 20%), so **Net Income drops by $8**.\n"
+            "2. **Cash Flow Statement**: Net Income starts down $8 in Cash Flow from Operations (CFO). But because Depreciation is a **non-cash expense**, "
+            "we add back the full $10. Therefore, **CFO increases by +$2** (-$8 + $10). Net Cash is up +$2!\n"
+            "3. **Balance Sheet**: Cash on the Assets side is up +$2, but Net PP&E drops by -$10 (accumulated depreciation), so Total Assets are down -$8. "
+            "On Liabilities & Equity, Retained Earnings are down -$8 (from Net Income). **Both sides balance down by -$8!**\n\n"
+            "⚡ **Core Insight**: Cash goes UP because depreciation acts as a **tax shield**."
+        )
+    elif "dcf" in q_lower or "discount" in q_lower or "wacc" in q_lower:
+        return (
+            "### 💡 DCF (Discounted Cash Flow) Core Concept:\n\n"
+            "A DCF is based on one golden principle: **A company is worth the present value of all future cash flows it will ever produce.**\n\n"
+            "- **Step 1**: Project **Unlevered Free Cash Flows (UFCF)** for 5-10 years (`EBIT × (1 - Tax) + D&A - Capex - ΔNWC`).\n"
+            "- **Step 2**: Discount them using **WACC** (Weighted Average Cost of Capital) because UFCF belongs to both debt and equity holders.\n"
+            "- **Step 3**: Add **Terminal Value** (value of cash flows beyond year 5, usually 60-80% of total Enterprise Value) discounted to today.\n"
+            "- **Step 4**: Sum of PV of cash flows = **Enterprise Value**. Subtract Net Debt to find **Equity Value**, then divide by shares for target stock price."
+        )
+    elif "working capital" in q_lower or "ar" in q_lower or "inventory" in q_lower:
+        return (
+            "### 💡 Working Capital Golden Rule:\n\n"
+            "- **An INCREASE in an Asset is an OUTFLOW of cash (uses cash).** (e.g., If Accounts Receivable rises by $50, you booked sales but haven't collected cash yet, so cash in bank decreases by $50).\n"
+            "- **An INCREASE in a Liability is an INFLOW of cash (sources cash).** (e.g., If Accounts Payable rises by $30, you delayed paying vendors, keeping more cash in your bank account).\n"
+            "**Formula**: `Operating Working Capital = Operating Current Assets - Operating Current Liabilities`"
+        )
+    else:
+        return (
+            f"### \U0001f4a1 Mentor Insight on: *{question}*\n\n"
+            "In corporate finance and financial modeling, always break down this problem into 3 sequential lenses:\n\n"
+            "1. **Accounting Mechanics**: Does this affect cash immediately, or is it an accrual timing difference (like Accounts Receivable or Deferred Revenue)?\n"
+            "2. **Cash Flow Statement Reality**: On the CFS, check if cash actually entered or left the firm (Operating, Investing, or Financing).\n"
+            "3. **Business & Valuation Impact**: How does this affect EBITDA margins, free cash flow generation, or cost of capital (WACC)?\n\n"
+            "*(💡 Pro-Tip: Add your Gemini API key in Streamlit Secrets or the sidebar to unlock deep generative answers to any custom question!)*"
+        )
+
+
 
 # ==========================================
 # 5. USER INTERFACE & APPLICATION LOGIC
@@ -1405,6 +1938,10 @@ if "filter_role" not in st.session_state:
     st.session_state.filter_role = "All Roles"
 if "filter_company" not in st.session_state:
     st.session_state.filter_company = ""
+if "ai_chat_history" not in st.session_state:
+    st.session_state.ai_chat_history = []
+if "module_ai_query" not in st.session_state:
+    st.session_state.module_ai_query = ""
 
 # Sidebar Configuration
 with st.sidebar:
@@ -1419,6 +1956,7 @@ with st.sidebar:
         "Navigation",
         [
             "📚 Learn Finance from Scratch",
+            "🤖 Ask AI Finance Tutor",
             "📝 Smart Notes Generator",
             "💼 Interview Question Bank",
             "🎙️ Verbal Delivery Coach",
@@ -1432,16 +1970,27 @@ with st.sidebar:
     
     # Optional Gemini API Key for deep generative notes
     st.markdown("#### ⚙️ Settings")
-    user_api_key = st.text_input(
-        "Gemini API Key (Optional)",
-        type="password",
-        placeholder="Paste API key for live AI...",
-        help="FinPrep Pro works 100% offline out-of-the-box. Add a Gemini key to activate advanced neural summarization."
-    )
-    if user_api_key:
-        st.success("API Key loaded successfully!")
+    has_cloud_secret = False
+    try:
+        if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets and st.secrets["GEMINI_API_KEY"]:
+            has_cloud_secret = True
+    except Exception:
+        pass
+
+    if has_cloud_secret:
+        st.success("⚡ Gemini API Active via Streamlit Secrets!")
+        user_api_key = ""
     else:
-        st.info("Operating on built-in Financial NLP engine (No API key needed).")
+        user_api_key = st.text_input(
+            "Gemini API Key (Optional)",
+            type="password",
+            placeholder="Paste API key for live AI...",
+            help="FinPrep Pro works 100% offline out-of-the-box. Add a Gemini key to activate advanced neural summarization."
+        )
+        if user_api_key:
+            st.success("API Key loaded successfully!")
+        else:
+            st.info("Operating on built-in Financial NLP engine (No API key needed).")
         
     st.divider()
     st.markdown("💡 **Pro-Tip**: Use the **Verbal Delivery Coach** before your phone screens to practice natural speech cadence.")
@@ -1495,6 +2044,19 @@ if nav_selection == "📚 Learn Finance from Scratch":
             
             st.markdown(f"<div class='formula-tag'>📐 Formula: {lesson['formula']}</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='cue-box'>💡 <b>Interviewer Secret & Pro-Tip:</b> {lesson['pro_tip']}</div>", unsafe_allow_html=True)
+            
+            # Inline Doubt-Solver AI
+            with st.expander(f"💬 Have a question about {lesson['subtitle']}? Ask AI right here", expanded=False):
+                q_key = f"q_input_{lesson['subtitle'].replace(' ', '_')}"
+                user_doubt = st.text_input("Ask your specific question or describe what confuses you:", placeholder="e.g. Why does cash increase if depreciation is an expense?", key=q_key)
+                if st.button("Ask AI Mentor", key=f"btn_{q_key}"):
+                    if user_doubt.strip():
+                        with st.spinner("AI Finance Mentor analyzing..."):
+                            lesson_context = f"Topic: {lesson['subtitle']}\nSummary: {lesson['summary']}\nFormulas: {lesson['formula']}"
+                            ai_ans = ask_finance_ai(user_doubt, context=lesson_context, api_key=user_api_key)
+                            st.markdown(f"<div class='spoken-box' style='background:#F0FDF4; border-left:4px solid #16A34A;'><b>🤖 AI Finance Mentor:</b><br><br>{ai_ans}</div>", unsafe_allow_html=True)
+                    else:
+                        st.caption("Please type a question above.")
 
     st.divider()
     
@@ -1502,7 +2064,7 @@ if nav_selection == "📚 Learn Finance from Scratch":
     st.markdown("### 🧪 Hands-On Interactive Sandboxes")
     sandbox_choice = st.radio(
         "Choose an Interactive Calculator:",
-        ["1. The $10 Depreciation Flow Simulator", "2. Dynamic 5-Year DCF Sandbox", "3. Cash Conversion Cycle (CCC) Tool"],
+        ["1. The $10 Depreciation Flow Simulator", "2. Dynamic 5-Year DCF Sandbox", "3. Cash Conversion Cycle (CCC) Tool", "4. Budget vs. Actual (BvA) Variance & EBITDA Bridge", "5. Private Equity LBO Returns & IRR Simulator"],
         horizontal=True
     )
     
@@ -1624,8 +2186,184 @@ if nav_selection == "📚 Learn Finance from Scratch":
         else:
             st.info(f"The company takes **{ccc_res['ccc']} days** to convert cash spent on inventory back into cash from sales. Lowering DSO or increasing DPO will free up liquid cash.")
 
+    elif sandbox_choice == "4. Budget vs. Actual (BvA) Variance & EBITDA Bridge":
+        st.markdown("#### Budget vs. Actual (BvA) Variance & EBITDA Bridge Simulator")
+        st.caption("Perform corporate FP&A variance analysis. Deconstruct revenue and cost variances and evaluate whether overall performance is Favorable or Unfavorable.")
+        
+        bv_col1, bv_col2 = st.columns(2)
+        with bv_col1:
+            st.markdown("##### 🎯 Approved Budget (AOP) Assumptions ($K)")
+            b_rev = st.number_input("Budgeted Revenue ($K)", value=500.0, step=25.0)
+            b_cogs = st.number_input("Budgeted COGS ($K)", value=250.0, step=10.0)
+            b_opex = st.number_input("Budgeted OPEX ($K)", value=120.0, step=10.0)
+        with bv_col2:
+            st.markdown("##### 📊 Actual Financial Results ($K)")
+            a_rev = st.number_input("Actual Revenue ($K)", value=475.0, step=25.0)
+            a_cogs = st.number_input("Actual COGS ($K)", value=235.0, step=10.0)
+            a_opex = st.number_input("Actual OPEX ($K)", value=135.0, step=10.0)
+            
+        bva = calculate_bva_variance(
+            budget_rev=b_rev, actual_rev=a_rev,
+            budget_cogs=b_cogs, actual_cogs=a_cogs,
+            budget_opex=b_opex, actual_opex=a_opex
+        )
+        
+        # Summary KPI Cards
+        st.markdown("##### 🏆 Executive Variance Summary:")
+        vm1, vm2, vm3, vm4 = st.columns(4)
+        vm1.metric(
+            "Revenue Outturn",
+            f"${bva['actual_rev']:,.0f}K",
+            delta=f"{bva['rev_var']:+,.0f}K ({bva['rev_var_pct']:+.1f}%)",
+            delta_color="normal"
+        )
+        vm2.metric(
+            "COGS (Direct Costs)",
+            f"${bva['actual_cogs']:,.0f}K",
+            delta=f"{-bva['cogs_var']:+,.0f}K ({bva['cogs_status']})",
+            delta_color="inverse"
+        )
+        vm3.metric(
+            "OPEX Overhead",
+            f"${bva['actual_opex']:,.0f}K",
+            delta=f"{-bva['opex_var']:+,.0f}K ({bva['opex_status']})",
+            delta_color="inverse"
+        )
+        vm4.metric(
+            "EBITDA Bridge Outturn",
+            f"${bva['actual_ebitda']:,.0f}K",
+            delta=f"{bva['ebitda_var']:+,.0f}K ({bva['ebitda_status']})",
+            delta_color="normal"
+        )
+        
+        # Detailed Table
+        st.markdown("##### 📋 Detailed Variance Waterfall Breakdown:")
+        bva_df = pd.DataFrame([
+            {"Line Item": "Total Revenue", "Budget ($K)": f"${bva['budget_rev']:,.0f}", "Actual ($K)": f"${bva['actual_rev']:,.0f}", "Variance ($K)": f"{bva['rev_var']:+,.0f}", "% Variance": f"{bva['rev_var_pct']:+.1f}%", "Status": bva['rev_status']},
+            {"Line Item": "Cost of Goods Sold (COGS)", "Budget ($K)": f"${bva['budget_cogs']:,.0f}", "Actual ($K)": f"${bva['actual_cogs']:,.0f}", "Variance ($K)": f"{bva['cogs_var']:+,.0f}", "% Variance": f"{bva['cogs_var_pct']:+.1f}%", "Status": bva['cogs_status']},
+            {"Line Item": "Operating Expenses (OPEX)", "Budget ($K)": f"${bva['budget_opex']:,.0f}", "Actual ($K)": f"${bva['actual_opex']:,.0f}", "Variance ($K)": f"{bva['opex_var']:+,.0f}", "% Variance": f"{bva['opex_var_pct']:+.1f}%", "Status": bva['opex_status']},
+            {"Line Item": "EBITDA (Operating Cash Proxy)", "Budget ($K)": f"${bva['budget_ebitda']:,.0f}", "Actual ($K)": f"${bva['actual_ebitda']:,.0f}", "Variance ($K)": f"{bva['ebitda_var']:+,.0f}", "% Variance": f"{bva['ebitda_var_pct']:+.1f}%", "Status": bva['ebitda_status']}
+        ])
+        st.dataframe(bva_df, use_container_width=True, hide_index=True)
+        
+        # FP&A Storytelling Interpretation
+        if bva["ebitda_var"] >= 0:
+            st.success(f"📈 **Executive Takeaway:** Overall EBITDA outperformed budget by **+${bva['ebitda_var']:,.0f}K ({bva['ebitda_var_pct']:+.1f}%)**. Present this in management review as a positive operating buffer!")
+        else:
+            st.warning(f"⚠️ **Executive Takeaway:** Overall EBITDA underperformed budget by **-${abs(bva['ebitda_var']):,.0f}K ({bva['ebitda_var_pct']:+.1f}%)**. Unpack whether the driver is top-line revenue slippage or OPEX headcount overspend.")
+
+    elif sandbox_choice == "5. Private Equity LBO Returns & IRR Simulator":
+        st.markdown("#### 🏦 Private Equity Leveraged Buyout (LBO) Returns & IRR Simulator")
+        st.caption("Model entry leverage, debt paydown through operational cash flows, exit multiple expansion, and compute the resulting MoIC and annualized IRR.")
+        
+        lb_col1, lb_col2, lb_col3 = st.columns(3)
+        with lb_col1:
+            st.markdown("##### 🛒 Acquisition Assumptions")
+            p_price = st.number_input("Purchase Price ($M)", value=100.0, step=10.0)
+            d_pct = st.slider("Debt Leverage (%)", 30, 85, 70) / 100.0
+            hold_yrs = st.slider("Holding Period (Years)", 3, 7, 5)
+        with lb_col2:
+            st.markdown("##### ⚙️ Operational Deleveraging")
+            ent_ebitda = st.number_input("Entry EBITDA ($M)", value=15.0, step=2.0)
+            ex_ebitda = st.number_input("Exit EBITDA ($M)", value=22.0, step=2.0)
+            fcf_paydown = st.number_input("Annual Debt Paydown ($M/yr)", value=7.0, step=1.0)
+        with lb_col3:
+            st.markdown("##### 🚪 Exit & Valuation")
+            ex_mult = st.slider("Exit EV/EBITDA Multiple", 4.0, 16.0, 8.0, step=0.5)
+            
+        lbo = calculate_lbo_model(
+            purchase_price=p_price,
+            debt_pct=d_pct,
+            holding_period=hold_yrs,
+            entry_ebitda=ent_ebitda,
+            exit_ebitda=ex_ebitda,
+            exit_multiple=ex_mult,
+            annual_fcf_paydown=fcf_paydown
+        )
+        
+        # Summary Return KPI Cards
+        st.markdown("##### 🏆 Private Equity Return Metrics:")
+        lm1, lm2, lm3, lm4 = st.columns(4)
+        lm1.metric("Initial Sponsor Equity", f"${lbo['initial_equity']:.1f}M", delta=f"{int(d_pct*100)}% Debt Funded")
+        lm2.metric("Exit Equity Realized", f"${lbo['exit_equity']:.1f}M", delta=f"+${lbo['equity_growth']:.1f}M Profit")
+        lm3.metric("MoIC (Cash Return)", f"{lbo['moic']}x", delta="Target: >2.5x")
+        lm4.metric("Annualized IRR", f"{lbo['irr']}%", delta="Target: >20%")
+        
+        # LBO Balance Sheet Bridge
+        st.markdown("##### 📊 LBO Value Creation & Deleveraging Bridge:")
+        lbo_summary_df = pd.DataFrame([
+            {"Stage": "1. Entry Acquisition", "Enterprise Value": f"${lbo['purchase_price']:.1f}M", "Debt Outstanding": f"${lbo['initial_debt']:.1f}M", "Sponsor Equity": f"${lbo['initial_equity']:.1f}M", "Note": "Sponsor uses debt leverage to minimize cash check"},
+            {"Stage": "2. Holding Period Operations", "Enterprise Value": "—", "Debt Outstanding": f"-${lbo['total_debt_paid']:.1f}M paid", "Sponsor Equity": "Cash flows pay down debt", "Note": f"${fcf_paydown}M/yr FCF dedicated to debt service"},
+            {"Stage": "3. Exit / Sale", "Enterprise Value": f"${lbo['exit_enterprise_value']:.1f}M", "Debt Outstanding": f"${lbo['ending_debt']:.1f}M remaining", "Sponsor Equity": f"${lbo['exit_equity']:.1f}M", "Note": f"Sold at {ex_mult}x on ${ex_ebitda}M exit EBITDA"}
+        ])
+        st.dataframe(lbo_summary_df, use_container_width=True, hide_index=True)
+        
+        if lbo["irr"] >= 20.0:
+            st.success(f"🚀 **Outstanding PE Deal!** The sponsor generated **{lbo['moic']}x MoIC** and **{lbo['irr']}% IRR** (exceeding the standard 20% institutional hurdle rate) through operational EBITDA growth and paying down ${lbo['total_debt_paid']:.1f}M of debt.")
+        else:
+            st.info(f"The deal generated **{lbo['moic']}x MoIC** and **{lbo['irr']}% IRR**. To reach a 20%+ target IRR, the sponsor needs higher debt paydown, greater organic EBITDA expansion, or multiple expansion at exit.")
+
+
+
 
 # ==========================================
+
+# ==========================================
+# TAB 1.5: 🤖 ASK AI FINANCE TUTOR
+# ==========================================
+elif nav_selection == "🤖 Ask AI Finance Tutor":
+    st.markdown("## 🤖 AI Finance Mentor & Doubt Solver")
+    st.markdown("Don't understand a concept, stuck on a formula, or confused why a balance sheet doesn't balance? **Ask directly right here without leaving your dashboard!**")
+    
+    st.markdown("""
+    <div class="hero-container" style="background:#F0FDF4; border-color:#BBF7D0;">
+        <h4 style="margin:0; color:#166534;">🎓 Your 24/7 Wall Street & Big 4 Prep Mentor</h4>
+        <p style="margin:6px 0 0 0; color:#14532D; font-size:14px;">
+            Ask anything: <i>"Explain the $10 depreciation flow simply"</i>, <i>"Why is WACC used in DCF instead of Cost of Equity?"</i>, 
+            <i>"What is the difference between Accounting and FP&A?"</i>, or <i>"Why does Accounts Receivable increasing decrease cash?"</i>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Quick prompt buttons
+    st.markdown("##### ⚡ Quick Questions (Click to Ask):")
+    cq1, cq2, cq3 = st.columns(3)
+    quick_q = ""
+    with cq1:
+        if st.button("❓ Why does cash increase with $10 depreciation?", use_container_width=True):
+            quick_q = "Why does cash increase by $2 when depreciation increases by $10 with a 20% tax rate? Explain it simply."
+    with cq2:
+        if st.button("❓ Why is Debt cheaper than Equity?", use_container_width=True):
+            quick_q = "Why is debt cheaper than equity in corporate finance, and why can't a company just use 100% debt?"
+    with cq3:
+        if st.button("❓ Why subtract cash in Enterprise Value?", use_container_width=True):
+            quick_q = "Why do we subtract cash and add debt when calculating Enterprise Value from Equity Value?"
+            
+    # Chat display container
+    for msg in st.session_state.ai_chat_history:
+        if msg["role"] == "user":
+            st.markdown(f"**🧑‍💻 You:** {msg['content']}")
+        else:
+            st.markdown(f"<div class='spoken-box' style='background:#F0FDF4; border-left:4px solid #16A34A;'><b>🤖 AI Finance Mentor:</b><br><br>{msg['content']}</div>", unsafe_allow_html=True)
+            
+    # Chat input box
+    chat_input = st.chat_input("Type your finance question or describe your problem here...")
+    active_prompt = quick_q or chat_input
+    
+    if active_prompt:
+        st.session_state.ai_chat_history.append({"role": "user", "content": active_prompt})
+        st.markdown(f"**🧑‍💻 You:** {active_prompt}")
+        with st.spinner("AI Finance Mentor analyzing..."):
+            ans = ask_finance_ai(active_prompt, api_key=user_api_key, history=st.session_state.ai_chat_history)
+            st.session_state.ai_chat_history.append({"role": "assistant", "content": ans})
+            st.markdown(f"<div class='spoken-box' style='background:#F0FDF4; border-left:4px solid #16A34A;'><b>🤖 AI Finance Mentor:</b><br><br>{ans}</div>", unsafe_allow_html=True)
+            
+    if st.session_state.ai_chat_history:
+        st.write("")
+        if st.button("🗑️ Clear Chat History"):
+            st.session_state.ai_chat_history = []
+            st.rerun()
+
 # TAB 2: SMART NOTES GENERATOR
 # ==========================================
 elif nav_selection == "📝 Smart Notes Generator":

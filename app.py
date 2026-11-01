@@ -1,5 +1,5 @@
 """
-FinPrep Pro — Standalone All-In-One Edition
+FinPrep Pro - Standalone All-In-One Edition
 Self-contained single-file deployment for Streamlit Community Cloud.
 """
 
@@ -1637,103 +1637,88 @@ def calculate_bva_variance(
 def ask_finance_ai(question: str, context: str = "", api_key: str = "", history: list = None) -> str:
     """
     Direct in-platform AI Finance Mentor.
-    Uses Gemini API if key is available, or built-in financial tutor fallback.
+    Connects to Google Gemini API (gemini-2.5-flash / gemini-2.0-flash / gemini-1.5-flash).
     """
+    # 1. Retrieve Gemini Key from Streamlit Secrets, parameter, or environment
     secret_key = ""
     try:
         if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
             secret_key = str(st.secrets["GEMINI_API_KEY"]).strip()
     except Exception:
         pass
+        
     key = api_key.strip() or secret_key or os.getenv("GEMINI_API_KEY", "").strip()
+
+    if not key:
+        return (
+            "⚠️ **Gemini API Key Required for Live AI Tutoring**\n\n"
+            "You are currently seeing the offline template because no active Gemini API key was detected.\n\n"
+            "**To activate real-time answers for any question:**\n"
+            "1. **Quick Way:** Paste your key into the **'Gemini API Key'** box in the left sidebar.\n"
+            "2. **Permanent Way (Recommended):** On Streamlit Cloud, click **Manage app** (bottom-right) ➔ **Settings** ➔ **Secrets**, and add:\n"
+            "```toml\nGEMINI_API_KEY = \"AIzaSyYourActualKeyHere\"\n```\n"
+            "Once added, you can ask anything—from complex M&A and LBO math to general questions—and get real-time answers!"
+        )
 
     system_prompt = (
         "You are FinPrep AI, an elite, patient Wall Street finance professor and senior corporate finance mentor. "
-        "The user is a learner or interview candidate studying finance. "
-        "Explain concepts intuitively from first principles with simple analogies, then provide the exact technical "
-        "formula/accounting flow, followed by how interviewers at Goldman Sachs, JP Morgan, Deloitte, or Amazon test it. "
-        "Keep answers crisp, encouraging, beautifully formatted in Markdown with bold key terms, and easy to grasp. "
-        "If the user asks about a problem in their study material or balance sheet linkage, pinpoint the exact issue clearly."
+        "The user is asking you a question directly inside their learning platform. "
+        "Answer the user's specific question directly, accurately, and naturally. "
+        "If the question is about finance, explain it clearly with intuition, simple analogies, and technical formulas. "
+        "If the question is completely non-financial (e.g., 'what is a chair?'), answer it politely, clearly, and naturally, without forcing finance jargon. "
+        "Keep your formatting clean in Markdown with bold key terms."
     )
 
-    if key:
-        try:
-            from google import genai
-            client = genai.Client(api_key=key)
-            prompt = f"{system_prompt}\n\n"
-            if context:
-                prompt += f"Context from the module the user is reading:\n\"\"\"{context}\"\"\"\n\n"
-            if history:
-                prompt += "Recent Conversation History:\n"
-                for h in history[-4:]:
-                    prompt += f"{h['role'].upper()}: {h['content']}\n"
-                prompt += "\n"
-            prompt += f"User's Question: {question}\n\nAnswer:"
-            
-            response = client.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=prompt
-            )
-            if response and response.text:
-                return response.text
-        except Exception as e:
+    prompt = f"{system_prompt}\n\n"
+    if context:
+        prompt += f"Context from the module the user is reading:\n{context}\n\n"
+    if history:
+        prompt += "Recent Conversation History:\n"
+        for h in history[-4:]:
+            prompt += f"{h['role'].upper()}: {h['content']}\n"
+        prompt += "\n"
+    prompt += f"User's Question: {question}\n\nAnswer:"
+
+    # Attempt API generation with modern google-genai SDK
+    try:
+        from google import genai
+        client = genai.Client(api_key=key)
+        for model_name in ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash']:
             try:
-                # Try fallback model
                 response = client.models.generate_content(
-                    model='gemini-2.0-flash',
+                    model=model_name,
                     contents=prompt
                 )
                 if response and response.text:
                     return response.text
             except Exception:
-                pass
+                continue
+    except Exception as e:
+        pass
 
-    # High-quality smart offline fallback response
-    q_lower = question.lower()
-    if "depreciation" in q_lower or "$10" in q_lower:
-        return (
-            "### 💡 Here is the exact mechanics of Depreciation across the 3 Statements:\n\n"
-            "1. **Income Statement**: Depreciation is an operating expense. A $10 increase reduces Operating Income (EBIT) by $10. "
-            "Assuming a 20% tax rate, you save $2 on taxes ($10 × 20%), so **Net Income drops by $8**.\n"
-            "2. **Cash Flow Statement**: Net Income starts down $8 in Cash Flow from Operations (CFO). But because Depreciation is a **non-cash expense**, "
-            "we add back the full $10. Therefore, **CFO increases by +$2** (-$8 + $10). Net Cash is up +$2!\n"
-            "3. **Balance Sheet**: Cash on the Assets side is up +$2, but Net PP&E drops by -$10 (accumulated depreciation), so Total Assets are down -$8. "
-            "On Liabilities & Equity, Retained Earnings are down -$8 (from Net Income). **Both sides balance down by -$8!**\n\n"
-            "⚡ **Core Insight**: Cash goes UP because depreciation acts as a **tax shield**."
-        )
-    elif "dcf" in q_lower or "discount" in q_lower or "wacc" in q_lower:
-        return (
-            "### 💡 DCF (Discounted Cash Flow) Core Concept:\n\n"
-            "A DCF is based on one golden principle: **A company is worth the present value of all future cash flows it will ever produce.**\n\n"
-            "- **Step 1**: Project **Unlevered Free Cash Flows (UFCF)** for 5-10 years (`EBIT × (1 - Tax) + D&A - Capex - ΔNWC`).\n"
-            "- **Step 2**: Discount them using **WACC** (Weighted Average Cost of Capital) because UFCF belongs to both debt and equity holders.\n"
-            "- **Step 3**: Add **Terminal Value** (value of cash flows beyond year 5, usually 60-80% of total Enterprise Value) discounted to today.\n"
-            "- **Step 4**: Sum of PV of cash flows = **Enterprise Value**. Subtract Net Debt to find **Equity Value**, then divide by shares for target stock price."
-        )
-    elif "working capital" in q_lower or "ar" in q_lower or "inventory" in q_lower:
-        return (
-            "### 💡 Working Capital Golden Rule:\n\n"
-            "- **An INCREASE in an Asset is an OUTFLOW of cash (uses cash).** (e.g., If Accounts Receivable rises by $50, you booked sales but haven't collected cash yet, so cash in bank decreases by $50).\n"
-            "- **An INCREASE in a Liability is an INFLOW of cash (sources cash).** (e.g., If Accounts Payable rises by $30, you delayed paying vendors, keeping more cash in your bank account).\n"
-            "**Formula**: `Operating Working Capital = Operating Current Assets - Operating Current Liabilities`"
-        )
-    else:
-        return (
-            f"### \U0001f4a1 Mentor Insight on: *{question}*\n\n"
-            "In corporate finance and financial modeling, always break down this problem into 3 sequential lenses:\n\n"
-            "1. **Accounting Mechanics**: Does this affect cash immediately, or is it an accrual timing difference (like Accounts Receivable or Deferred Revenue)?\n"
-            "2. **Cash Flow Statement Reality**: On the CFS, check if cash actually entered or left the firm (Operating, Investing, or Financing).\n"
-            "3. **Business & Valuation Impact**: How does this affect EBITDA margins, free cash flow generation, or cost of capital (WACC)?\n\n"
-            "*(💡 Pro-Tip: Add your Gemini API key in Streamlit Secrets or the sidebar to unlock deep generative answers to any custom question!)*"
-        )
+    # Fallback to google.generativeai legacy if installed
+    try:
+        import google.generativeai as legacy_genai
+        legacy_genai.configure(api_key=key)
+        model = legacy_genai.GenerativeModel('gemini-1.5-flash')
+        res = model.generate_content(prompt)
+        if res and res.text:
+            return res.text
+    except Exception as e:
+        pass
 
+    return (
+        "⚠️ **Could not connect to Gemini API**\n\n"
+        "Please verify that your Gemini API key in **Streamlit Secrets** or the sidebar is valid and has not expired. "
+        "You can test or regenerate your key for free at [Google AI Studio](https://aistudio.google.com/app/apikey)."
+    )
 
 
 # ==========================================
 # 5. USER INTERFACE & APPLICATION LOGIC
 # ==========================================
 """
-FinPrep Pro — Complete Finance Learning & Career Preparation Platform
+FinPrep Pro - Complete Finance Learning & Career Preparation Platform
 Built with Streamlit and modern clean light-mode UI design.
 """
 
